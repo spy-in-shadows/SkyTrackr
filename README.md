@@ -45,8 +45,8 @@ The platform provides an interactive way to discover space data using powerful s
 
 ## 🌐 APIs Used
 
-This project uses the **Launch Library 2 API** to fetch real-time space data.
-API: https://ll.thespacedevs.com/2.2.0/
+* This project uses the **Launch Library 2 API** to fetch real-time space data.
+* API: https://ll.thespacedevs.com/2.2.0/
 
 ### 🚀 Core Endpoints
 
