@@ -1,8 +1,8 @@
-# 🚀 SkyTrakr – Real-Time Space Activity Dashboard
+# 🚀 SkyTrackr – Real-Time Space Activity Dashboard
 
 ## 🌌 Project Overview
 
-SkyTrakr is a modern web application designed to help users explore real-time space activity, including rocket launches, astronauts, and space agencies.
+SkyTrackr is a modern web application designed to help users explore real-time space activity, including rocket launches, astronauts, and space agencies.
 
 The platform provides an interactive way to discover space data using powerful search, filtering, and sorting capabilities, all powered by live API data.
 
