@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Space Explorer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <h1 class="logo">Space Explorer</h1>
+      <p class="tagline">Real-time rocket launches from around the world</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="section-heading">
+      <h2>Upcoming Launches</h2>
+      <p>
+        Explore live launch data including mission names, launch providers,
+        locations, dates, and rocket details.
+      </p>
+    </section>
+
+    <section id="status-section" class="status-section">
+      <div id="loading" class="status-card loading">Loading launches...</div>
+      <div id="error" class="status-card hidden"></div>
+    </section>
+
+    <section id="launches-grid" class="launches-grid hidden"></section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
