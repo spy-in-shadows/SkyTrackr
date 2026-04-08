@@ -50,7 +50,10 @@ function createLaunchCard(launch) {
 
   return `
     <article class="launch-card">
-      <img class="launch-image" src="${imageUrl}" alt="${name}">
+      <div class="launch-image-wrapper">
+        <img class="launch-image" src="${imageUrl}" alt="${name}">
+      </div>
+
       <div class="launch-content">
         <div class="launch-top">
           <span class="status-pill">${status}</span>

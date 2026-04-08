@@ -121,26 +121,39 @@ main {
 }
 
 .launch-card {
+  display: flex;
+  flex-direction: row;
   background: var(--card);
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
   transition: transform 0.2s ease;
+  min-height: 320px;
 }
 
 .launch-card:hover {
   transform: translateY(-4px);
 }
 
+.launch-image-wrapper {
+  width: 38%;
+  min-width: 180px;
+  background: var(--card-dark);
+}
+
 .launch-image {
   width: 100%;
-  height: 220px;
+  height: 100%;
   object-fit: cover;
+  object-position: center;
   background: var(--card-dark);
 }
 
 .launch-content {
+  width: 62%;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .launch-top {
@@ -194,6 +207,7 @@ main {
 .launch-description {
   color: var(--muted);
   font-size: 0.95rem;
+  margin-top: auto;
 }
 
 @media (min-width: 700px) {
@@ -202,7 +216,7 @@ main {
   }
 
   .launches-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
   }
 
   .logo {
@@ -212,10 +226,27 @@ main {
 
 @media (min-width: 1024px) {
   .launches-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .section-heading h2 {
     font-size: 2.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .launch-card {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .launch-image-wrapper {
+    width: 100%;
+    min-width: 100%;
+    height: 240px;
+  }
+
+  .launch-content {
+    width: 100%;
   }
 }
