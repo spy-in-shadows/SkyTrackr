@@ -45,13 +45,6 @@ img {
     center/cover no-repeat;
 }
 
-.navbar {
-  padding: 24px;
-  border-radius: 20px;
-  background: rgba(26, 31, 46, 0.55);
-  backdrop-filter: blur(10px);
-}
-
 .logo {
   font-family: "Space Grotesk", sans-serif;
   font-size: 3rem;
@@ -81,6 +74,28 @@ main {
 
 .section-heading p {
   max-width: 700px;
+  color: var(--muted);
+}
+
+.controls-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-bottom: 25px;
+}
+
+.control-input {
+  width: 100%;
+  padding: 14px 16px;
+  border: none;
+  outline: none;
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.control-input::placeholder {
   color: var(--muted);
 }
 
@@ -182,6 +197,10 @@ main {
 }
 
 @media (min-width: 700px) {
+  .controls-section {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
   .launches-grid {
     grid-template-columns: repeat(2, 1fr);
   }
