@@ -1,4 +1,4 @@
-const API_URL = "https://ll.thespacedevs.com/2.2.0/launch/?format=json&limit=12";
+const API_URL = "https://ll.thespacedevs.com/2.2.0/launch/?format=json&ordering=-net&limit=50";
 const CACHE_TIME = 30 * 60 * 1000;
 
 let allLaunches = [];
@@ -13,7 +13,6 @@ const sortSelect = document.getElementById("sortSelect");
 
 function formatDate(dateString) {
   if (!dateString) return "Not available";
-
   return new Date(dateString).toLocaleString("en-IN", {
     dateStyle: "medium",
     timeStyle: "short"
@@ -21,57 +20,32 @@ function formatDate(dateString) {
 }
 
 function getImageUrl(launch) {
-  if (launch.image && typeof launch.image === "string") {
-    return launch.image;
-  }
-
-  return "https://via.placeholder.com/800x500?text=No+Image";
+  return launch.image || "https://via.placeholder.com/800x500?text=No+Image";
 }
 
 function createLaunchCard(launch) {
-  const name = launch.name || "Unnamed Launch";
-  const status = launch.status ? launch.status.name : "Not available";
-  const provider = launch.launch_service_provider
-    ? launch.launch_service_provider.name
-    : "Not available";
-  const rocket =
-    launch.rocket && launch.rocket.configuration
-      ? launch.rocket.configuration.full_name
-      : "Not available";
-  const location =
-    launch.pad && launch.pad.location
-      ? launch.pad.location.name
-      : "Not available";
-  const missionDescription =
-    launch.mission && launch.mission.description
-      ? launch.mission.description
-      : "Mission details not available.";
-  const imageUrl = getImageUrl(launch);
-
   return `
     <article class="launch-card">
       <div class="launch-image-wrapper">
-        <img class="launch-image" src="${imageUrl}" alt="${name}">
+        <img class="launch-image" src="${getImageUrl(launch)}">
       </div>
 
       <div class="launch-content">
-        <div class="launch-top">
-          <span class="status-pill">${status}</span>
-          <h3 class="launch-name">${name}</h3>
-        </div>
+        <span class="status-pill">${launch.status?.name || "N/A"}</span>
+        <h3 class="launch-name">${launch.name}</h3>
 
         <div class="launch-meta">
           <div class="meta-row">
             <span class="meta-label">Provider</span>
-            <span class="meta-value">${provider}</span>
+            <span class="meta-value">${launch.launch_service_provider?.name || "N/A"}</span>
           </div>
           <div class="meta-row">
             <span class="meta-label">Rocket</span>
-            <span class="meta-value">${rocket}</span>
+            <span class="meta-value">${launch.rocket?.configuration?.full_name || "N/A"}</span>
           </div>
           <div class="meta-row">
             <span class="meta-label">Location</span>
-            <span class="meta-value">${location}</span>
+            <span class="meta-value">${launch.pad?.location?.name || "N/A"}</span>
           </div>
           <div class="meta-row">
             <span class="meta-label">Launch Time</span>
@@ -79,43 +53,47 @@ function createLaunchCard(launch) {
           </div>
         </div>
 
-        <p class="launch-description">${missionDescription}</p>
+        <p class="launch-description">
+          ${launch.mission?.description || "Mission details not available."}
+        </p>
       </div>
     </article>
   `;
 }
 
 function renderLaunches(data) {
-  if (data.length === 0) {
-    launchesGrid.innerHTML = `<div class="status-card">No launches found.</div>`;
+  const visible = data.slice(0, 20);
+
+  if (visible.length === 0) {
+    launchesGrid.innerHTML = `<div class="status-card">No launches found</div>`;
   } else {
-    launchesGrid.innerHTML = data.map(createLaunchCard).join("");
+    launchesGrid.innerHTML = visible.map(createLaunchCard).join("");
   }
 
   launchesGrid.classList.remove("hidden");
 }
 
 function applyFiltersAndSort() {
-  const searchValue = searchInput.value.toLowerCase().trim();
-  const selectedStatus = statusFilter.value;
-  const selectedSort = sortSelect.value;
+  const search = searchInput.value.toLowerCase().trim();
+  const status = statusFilter.value;
+  const sort = sortSelect.value;
 
   filteredLaunches = allLaunches.filter((launch) => {
-    const matchesSearch = launch.name.toLowerCase().includes(searchValue);
+    const matchesSearch = launch.name.toLowerCase().includes(search);
     const matchesStatus =
-      selectedStatus === "all" ||
-      (launch.status && launch.status.name === selectedStatus);
+      status === "all" ||
+      (launch.status && launch.status.name === status);
 
     return matchesSearch && matchesStatus;
   });
 
-  if (selectedSort === "date-asc") {
+  if (sort === "date-asc") {
     filteredLaunches.sort((a, b) => new Date(a.net) - new Date(b.net));
-  } else if (selectedSort === "date-desc") {
+  } else if (sort === "date-desc") {
     filteredLaunches.sort((a, b) => new Date(b.net) - new Date(a.net));
-  } else if (selectedSort === "name-asc") {
+  } else if (sort === "name-asc") {
     filteredLaunches.sort((a, b) => a.name.localeCompare(b.name));
-  } else if (selectedSort === "name-desc") {
+  } else if (sort === "name-desc") {
     filteredLaunches.sort((a, b) => b.name.localeCompare(a.name));
   }
 
@@ -128,52 +106,39 @@ async function fetchLaunches() {
   launchesGrid.classList.add("hidden");
 
   try {
-    const cachedRaw = localStorage.getItem("launchCache");
-    const cached = cachedRaw ? JSON.parse(cachedRaw) : null;
+    const cache = JSON.parse(localStorage.getItem("launchCache"));
 
-    if (cached && Date.now() - cached.time < CACHE_TIME) {
-      allLaunches = cached.data;
-      filteredLaunches = [...allLaunches];
-      renderLaunches(filteredLaunches);
-      loading.classList.add("hidden");
-      return;
+    if (
+      cache &&
+      cache.version === "v3" &&
+      Date.now() - cache.time < CACHE_TIME
+    ) {
+      allLaunches = cache.data;
+    } else {
+      const res = await fetch(API_URL);
+
+      if (!res.ok) {
+        throw new Error("API failed");
+      }
+
+      const data = await res.json();
+      allLaunches = data.results || [];
+
+      localStorage.setItem(
+        "launchCache",
+        JSON.stringify({
+          data: allLaunches,
+          time: Date.now(),
+          version: "v3"
+        })
+      );
     }
 
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000);
-
-    const response = await fetch(API_URL, {
-      signal: controller.signal
-    });
-
-    clearTimeout(timeoutId);
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch launch data.");
-    }
-
-    const data = await response.json();
-
-    allLaunches = data.results || [];
     filteredLaunches = [...allLaunches];
+    applyFiltersAndSort();
 
-    if (allLaunches.length === 0) {
-      throw new Error("No launch data found.");
-    }
-
-    localStorage.setItem(
-      "launchCache",
-      JSON.stringify({
-        data: allLaunches,
-        time: Date.now()
-      })
-    );
-
-    renderLaunches(filteredLaunches);
   } catch (err) {
-    errorBox.textContent = err.name === "AbortError"
-      ? "Request took too long. Please try again."
-      : "Error loading data.";
+    errorBox.textContent = "Error loading data";
     errorBox.classList.remove("hidden");
   } finally {
     loading.classList.add("hidden");
