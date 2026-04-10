@@ -1,131 +1,84 @@
-# 🚀 SkyTrackr – Real-Time Space Activity Dashboard
+# 🚀 SkyTrackr
 
-## 🌌 Project Overview
+## 🌐 Live Demo
 
-SkyTrackr is a modern web application designed to help users explore real-time space activity, including rocket launches, astronauts, and space agencies.
+👉 https://skytracker-spy-in-shadows.netlify.app
 
-The platform provides an interactive way to discover space data using powerful search, filtering, and sorting capabilities, all powered by live API data.
+## 🌌 Overview
+
+SkyTrackr is a real-time space exploration web app that tracks rocket launches from around the world. It allows users to explore mission details, launch providers, rockets, and locations using live data.
+
 
 ---
 
 ## ✨ Features
 
-### 🚀 Launch Explorer (Core Feature)
-
-* View upcoming rocket launches in real time
-* Search launches by mission or rocket name
-* Filter launches by status (upcoming, success, failure)
-* Sort launches by date or name
-
----
-
-### 🧑‍🚀 Astronaut Explorer (Planned)
-
-* Browse astronauts from around the world
-* Search by name
-* Filter by nationality or status
+* 🔍 Search launches by name
+* 🗂️ Filter by launch status
+* 🔃 Sort by date or name
+* 🚀 Dynamic launch cards with detailed information
+* ⚡ Optimized performance using caching
+* 📱 Fully responsive UI
 
 ---
 
-### 🏢 Agency Explorer (Planned)
+## 🌐 API Used
 
-* Explore space agencies and organizations
-* Filter by country or type
-* Sort alphabetically
+**Launch Library 2 API (The Space Devs)**
+Provides real-time data about:
 
----
-
-### 🎨 User Experience
-
-* Clean and modern UI
-* Fully responsive design (mobile, tablet, desktop)
-* Card-based layout for better readability
-
----
-
-## 🌐 APIs Used
-
-* This project uses the **Launch Library 2 API** to fetch real-time space data.
-* API: https://ll.thespacedevs.com/2.2.0/
-
-### 🚀 Core Endpoints
-
-* **Launches API** → Get upcoming and past rocket launches
-* **Astronauts API** → Retrieve astronaut details
-* **Agencies API** → Fetch space agency information
-
----
-
-## ⚙️ API Type
-
-* REST API
-* JSON-based responses
+* Rocket launches
+* Space agencies
+* Missions and events
 
 ---
 
 ## 🛠️ Tech Stack
 
-* **Frontend:** HTML, CSS, JavaScript (ES6+)
-* **API Integration:** Fetch API
-* **Styling:** CSS
+* HTML
+* CSS
+* JavaScript (Vanilla)
+* Fetch API
+* LocalStorage
 
 ---
 
 ## ⚙️ How It Works
 
-1. The application fetches data from the Space Devs API.
-2. Data is stored and managed in JavaScript.
-3. Array methods like `map`, `filter`, and `sort` are used to process the data.
-4. The UI dynamically updates based on user interactions.
+1. Fetches launch data from API
+2. Stores data in localStorage
+3. Uses filter, sort, and map functions
+4. Dynamically renders UI
 
 ---
 
-## 🔎 Example Use Case
+## 🚀 Run Locally
 
-User searches: **"Falcon"**
+```bash
+git clone https://github.com/spy-in-shadows/SkyTrackr
+cd SkyTrackr
+```
 
-👉 The app filters and displays all rocket launches related to Falcon missions.
-
----
-
-## 💡 Additional Features (Planned Enhancements)
-
-* ⭐ Save favorite launches (localStorage)
-* 🌙 Dark mode toggle
-* 📊 Advanced filtering options
-* 🔄 Pagination or infinite scrolling
+Then open using Live Server.
 
 ---
 
-## 📂 Project Structure
+## 🌍 Deployment
 
-space-explorer/
-│── index.html
-│── style.css
-│── script.js
-│── README.md
-
----
-
-## 🎯 Learning Objectives
-
-* Work with real-world REST APIs
-* Handle asynchronous JavaScript (fetch API)
-* Implement search, filtering, and sorting logic
-* Build responsive and interactive UI
+Deployed using Netlify.
+Link - https://skytracker-spy-in-shadows.netlify.app
 
 ---
 
 ## 📌 Future Improvements
 
-* Multi-page navigation (Launches, Astronauts, Agencies)
-* Performance optimization
-* Deployment with custom domain
-* Progressive Web App (PWA) support
+* Pagination / Load more
+* Favorites system
+* Dark mode toggle
+* AI-based launch recommendations
 
 ---
 
-## 🙌 Acknowledgment
+## 🙌 Credits
 
-* Data provided by **The Space Devs (Launch Library 2 API)**
-* Built as a real-world frontend project to practice API integration and UI development
+Data provided by The Space Devs API

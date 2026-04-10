@@ -62,12 +62,10 @@ function createLaunchCard(launch) {
 }
 
 function renderLaunches(data) {
-  const visible = data.slice(0, 20);
-
-  if (visible.length === 0) {
+  if (data.length === 0) {
     launchesGrid.innerHTML = `<div class="status-card">No launches found</div>`;
   } else {
-    launchesGrid.innerHTML = visible.map(createLaunchCard).join("");
+    launchesGrid.innerHTML = data.map(createLaunchCard).join("");
   }
 
   launchesGrid.classList.remove("hidden");
